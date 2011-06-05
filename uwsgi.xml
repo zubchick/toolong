@@ -1,0 +1,16 @@
+<uwsgi>
+    <chdir>/var/www/toolong/</chdir>
+    <wsgi-file>/var/www/toolong/shrt.py</wsgi-file>
+    <callable>app</callable>
+
+    <socket>/tmp/toolongwsgi.sock</socket>
+    <chmod-socket>666</chmod-socket>
+
+    <master />
+    <processes>1</processes>
+
+    <disable-logging /><!-- Errors are still logged; this just disables request logging which Cherokee takes care of -->
+
+    <vacuum />
+    <no-orphans />
+</uwsgi>
