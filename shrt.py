@@ -36,7 +36,7 @@ def show_short_url():
         return render_template('shorturl.html', link=l,
                                short_url="http://%s/%s" % (request.host, l.key))
     else:
-        return render_template('mainpage.html', error='Input url first')
+        return render_template('mainpage.html', error='Input url at first')
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'])
