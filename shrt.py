@@ -15,18 +15,22 @@ def main_page():
         l = Link(red, url=url)
         return "http://%s/%s" % (request.host, l.key)
     else:
-        return "<h1>Hello world</h1>%s<p>Your IP - %s</p>" % (request.host, request.remote_addr)
+        return u"<h1>Привет мир</h1>%s<p>Your IP - %s</p>" % (request.host, request.remote_addr)
 
 
 @app.route('/<key>')
 def key_url(key):
     l = Link(red, key=key)
-    url = l.url
-    if url:
-        l.incr_click()
-        return redirect(l.url)
+
+    if request.args.get('clicks', None) is None:
+        url = l.url
+        if url:
+            l.incr_click()
+            return redirect(l.url)
+        else:
+            abort(404)
     else:
-        abort(404)
+        return str(l.clicks)
 
 @app.errorhandler(404)
 def my404(error):
