@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, request, redirect, url_for, abort
+from flask import Flask, render_template, request, redirect, abort
 from redis import Redis
 from models import Link
 
@@ -15,27 +15,28 @@ def main_page():
         l = Link(red, url=url)
         return "http://%s/%s" % (request.host, l.key)
     else:
-        return u"<h1>Привет мир</h1>%s<p>Your IP - %s</p>" % (request.host, request.remote_addr)
-
+        return render_template('mainpage.html')
 
 @app.route('/<key>')
 def key_url(key):
     l = Link(red, key=key)
+    url = l.url
 
-    if request.args.get('clicks', None) is None:
-        url = l.url
-        if url:
-            l.incr_click()
-            return redirect(l.url)
-        else:
-            abort(404)
+    if url:
+        l.incr_click()
+        return redirect(l.url)
     else:
-        return str(l.clicks)
+        abort(404)
 
-@app.errorhandler(404)
-def my404(error):
-    return "404 - ololo", 404
+@app.route('/short', methods=['POST'])
+def show_short_url():
+    url = request.form.get('url', None)
+    if url:
+        l = Link(red, url=url)
+        return render_template('shorturl.html', link=l,
+                               short_url="http://%s/%s" % (request.host, l.key))
+    else:
+        return render_template('mainpage.html', error='Input url first')
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'])
-

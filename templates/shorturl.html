@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="shortform">
+        <label>
+            Your short url
+            <input type="text" name="url" value="{{ short_url }}" class="text2short"/>
+        </label>
+        <p class="description">Now you can use new url instead of <a href="{{ link.url }}">{{ link.url[:53] }}</a>...
+
+    </div>
+    <div class="shortform short-another"><a href="/">Short another</a></div>
+{% endblock %}

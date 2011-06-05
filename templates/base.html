@@ -1,0 +1,14 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset='utf-8' />
+        <title>{% block title %}2long.ru{% endblock %}</title>
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
