@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function copyToClipboard(text) {
+                var input = document.getElementById('clipp');
+                if(input == undefined) {
+                    return;
+                }
+                input.value = text;
+                input.select();
+                document.execCommand("copy");
+            }
+        </script>
+    </head>
+  <body>
+      <input type="text" value="" id="clipp"/>
+  </body>
+</html>
