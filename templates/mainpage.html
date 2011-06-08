@@ -2,12 +2,7 @@
 
 {% block body %}
 <div class="shortform">
-    <form method="post" action="/short">
-        <label>
-            Your long url
-            <input type="text" name="url" value="" class="text2short"/>
-        </label>
-    </form>
+    {% include "input.html" %}
     {% if error %}
         <p class="error">{{ error }}</p>
     {% endif %}
