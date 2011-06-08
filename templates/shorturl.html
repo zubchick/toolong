@@ -5,10 +5,10 @@
         {% include "input.html" %}
         {% if link %}
             <p class="description">Now you can use new url instead of <a href="{{ link.url }}">{{ link.url[:53] }}</a>...</p>
-            <p class="description">Use Ctrl+C for copy</p>
         {% else %}
             <p class="description">Your url already short</p>
         {% endif %}
+        <p class="description">Use Ctrl+C for copy</p>
     </div>
 {% endblock %}
 
