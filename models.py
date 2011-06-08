@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
+
 from datetime import datetime
 from util import to_new_base
 from url_normalize import url_normalize
+from redis import Redis
+from hashlib import sha256
+
+red = Redis()
 
 class Link(object):
     """ Link object repr in redis """
 
     time_f = '%Y-%m-%d %H:%M:%S'
 
-    def __init__(self, connect, url=None, key=None):
+    def __init__(self, url=None, key=None):
         obj = {}
-        self._r = connect
+        self._r = red
         if url:
             # create new
             self._url = url_normalize(url)
 
-            id = int(self._r.incr('last_url_id'))
-            self._key = key = to_new_base(id)
+            self._r.incr('last_url_id') # inc global counter
+            self._key = key = self._find_key(self._url)
 
             obj[key] = self._url
             obj['%s:created_at' % key] = datetime.now().strftime(self.time_f)
@@ -46,3 +51,13 @@ class Link(object):
     @property
     def url(self):
         return self._r.get(self._key)
+
+    def _find_key(self, url):
+        number = int(sha256(url).hexdigest(), 16) % (62 ** 6)
+        if self._r.get(to_new_base(number)) is None:
+            return to_new_base(number)
+        else:
+            while self._r.get(to_new_base(number)) is not None:
+                number += 1
+            else:
+                return to_new_base(number)
