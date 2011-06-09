@@ -18,7 +18,7 @@ def main_page():
     if url.find(request.host) >= 0:
         # redirect loop protection
         return url
-    elif len(url) < len(request.host) + 6:
+    elif len(url) < len('http://') + len(request.host) + 6:
         # url already short
         return url
     else:
@@ -44,7 +44,7 @@ def show_short_url():
     if url.find(request.host) >= 0:
         # redirect loop protection
         return render_template('shorturl.html', short_url=url)
-    elif len(url) < len(request.host) + 6:
+    elif len(url) < len('http://') + len(request.host) + 6:
         # url already short
         return render_template('shorturl.html', short_url=url)
     else:
